@@ -1,4 +1,4 @@
-package com.example.mimir.user.entity;
+package com.example.mimir.user.domain.entity;
 
 import java.nio.ByteBuffer;
 import java.util.Date;
@@ -63,7 +63,7 @@ public class User {
 		}
 	}
 
-	public static User join(String email, String password, String nickname) {
+	public static User signup(String email, String password, String nickname) {
 		User user = new User();
 		user.email = email;
 		user.password = PasswordEncoderUtil.encode(password);

@@ -4,18 +4,19 @@ import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import com.example.mimir.user.domain.entity.User;
 
 public class UserTest {
 	@Test
 	@DisplayName("회원가입 인스턴스 생성")
 	void join() {
 		// given
-		String email = "";
-		String password = "";
-		String nickname = "";
+		String email = "mimir@mimir.com";
+		String password = "mimir";
+		String nickname = "mimir";
 
 		// when
-		User user = User.join(email, password, nickname);
+		User user = User.signup(email, password, nickname);
 
 		// then
 		assertThat(user.getEmail()).isEqualTo(email); // email 이 설정됨

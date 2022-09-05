@@ -4,3 +4,6 @@ spring:
     name: ${DB_USER:seungtaek}
     password: ${DB_PASSWORD:seungtaek}
     driver-class-name: com.mysql.cj.jdbc.Driver
+server:
+  error:
+    include-stacktrace: never

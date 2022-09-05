@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import com.example.mimir.user.entity.User;
+import com.example.mimir.user.domain.entity.User;
 
 @SpringBootTest
 public class UserRepositoryTest {
@@ -19,7 +19,7 @@ public class UserRepositoryTest {
 	@Transactional
 	void save() {
 		// given
-		User user = User.join(
+		User user = User.signup(
 			"seungtaek95@naver.com",
 			"seungtaek",
 			"seungtaek95");
