@@ -1,4 +1,4 @@
-CREATE TABLE user (
+CREATE TABLE member (
     id BINARY(16) NOT NULL,
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE user (
 
 CREATE TABLE article (
     id INT UNSIGNED AUTO_INCREMENT NOT NULL,
-    user_id BINARY(16) NOT NULL,
+    member_id BINARY(16) NOT NULL,
     title VARCHAR(255) NOT NULL,
     content TEXT,
     is_private TINYINT(1) NOT NULL DEFAULT true,
@@ -23,18 +23,26 @@ CREATE TABLE article (
     deleted_at DATETIME,
     PRIMARY KEY (id),
     UNIQUE (id, title),
-    FOREIGN KEY (user_id) REFERENCES user (id)
+    FOREIGN KEY (member_id) REFERENCES member(id)
 );
 
 CREATE TABLE comment (
     id INT UNSIGNED AUTO_INCREMENT NOT NULL,
-    user_id BINARY(16) NOT NULL,
+    member_id BINARY(16) NOT NULL,
     article_id INT UNSIGNED NOT NULL,
     content VARCHAR(255),
     created_at DATETIME NOT NULL,
     updated_at DATETIME NOT NULL,
     deleted_at DATETIME,
     PRIMARY KEY (id),
-    FOREIGN KEY (user_id) REFERENCES user (id),
-    FOREIGN KEY (article_id) REFERENCES article (id)
+    FOREIGN KEY (member_id) REFERENCES member(id),
+    FOREIGN KEY (article_id) REFERENCES article(id)
+);
+
+CREATE TABLE member_session (
+    id VARCHAR(255) UNIQUE NOT NULL,
+    member_id BINARY(16) NOT NULL,
+    created_at DATETIME NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (member_id) REFERENCES member(id)
 );

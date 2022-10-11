@@ -1,7 +1,6 @@
-package com.example.mimir.user.domain.entity;
+package com.example.mimir.member.domain.entity;
 
-import java.nio.ByteBuffer;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -14,16 +13,18 @@ import org.springframework.data.relational.core.mapping.event.BeforeSaveCallback
 import org.springframework.stereotype.Component;
 
 import com.example.mimir.common.util.PasswordEncoderUtil;
+import com.example.mimir.common.util.UuidConverter;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 
 @Getter
-public class User {
+public class Member {
 	@Id
 	private byte[] id;
 
 	@Transient
+	@Getter(value = AccessLevel.NONE)
 	private UUID _id;
 
 	private String email;
@@ -35,43 +36,42 @@ public class User {
 
 	@CreatedDate
 	@Column("registered_at")
-	private Date registeredAt;
+	private LocalDateTime registeredAt;
 
 	@LastModifiedDate
 	@Column("updated_at")
-	private Date updatedAt;
+	private LocalDateTime updatedAt;
 
 	@Column("disabled_at")
-	private Date disabledAt;
+	private LocalDateTime disabledAt;
 
-	protected User() {}
+	protected Member() {}
 
 	@Component
-	static class UserBeforeSaveCallback implements BeforeSaveCallback<User> {
+	static class MemberBeforeSaveCallback implements BeforeSaveCallback<Member> {
 		@Override
-		public User onBeforeSave(User aggregate, MutableAggregateChange<User> aggregateChange) {
+		public Member onBeforeSave(Member aggregate, MutableAggregateChange<Member> aggregateChange) {
 			UUID uuid = UUID.randomUUID();
-			byte[] uuidBytes = new byte[16];
 
-			ByteBuffer.wrap(uuidBytes)
-				.putLong(uuid.getMostSignificantBits())
-				.putLong(uuid.getLeastSignificantBits());
-
-			aggregate.id = uuidBytes;
+			aggregate.id = UuidConverter.uuidToBytes(uuid);
 
 			return aggregate;
 		}
 	}
 
-	public static User signup(String email, String password, String nickname) {
-		User user = new User();
-		user.email = email;
-		user.password = PasswordEncoderUtil.encode(password);
-		user.nickname = nickname;
-		user.registeredAt = new Date();
-		user.updatedAt = new Date();
+	public static Member signup(String email, String password, String nickname) {
+		Member member = new Member();
+		member.email = email;
+		member.password = PasswordEncoderUtil.encode(password);
+		member.nickname = nickname;
+		member.registeredAt = LocalDateTime.now();
+		member.updatedAt = LocalDateTime.now();
 
-		return user;
+		return member;
+	}
+
+	public boolean isPasswordMatch(String password) {
+		return PasswordEncoderUtil.matches(password, this.password);
 	}
 
 	public UUID getId() {

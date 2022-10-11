@@ -5,8 +5,9 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum SignupExceptionEnum {
-	DUPLICATE_EMAIL("이메일이 이미 사용중입니다.");
+public enum AuthExceptionEnum {
+	DUPLICATE_EMAIL("이메일이 이미 사용중입니다."),
+	SIGN_IN_FAILED("이메일 또는 비밀번호를 잘못 입력했습니다.");
 
 	private final String message;
 }

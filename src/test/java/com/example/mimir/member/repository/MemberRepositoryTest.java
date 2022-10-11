@@ -1,33 +1,35 @@
-package com.example.mimir.user.repository;
+package com.example.mimir.member.repository;
 
 import static org.assertj.core.api.Assertions.*;
+
+import java.util.UUID;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import com.example.mimir.user.domain.entity.User;
+import com.example.mimir.member.domain.entity.Member;
 
 @SpringBootTest
-public class UserRepositoryTest {
+public class MemberRepositoryTest {
 	@Autowired
-	private UserRepository userRepository;
+	private MemberRepository memberRepository;
 
 	@Test
 	@DisplayName("사용자 저장 성공")
 	@Transactional
 	void save() {
 		// given
-		User user = User.signup(
+		Member member = Member.signup(
 			"seungtaek95@naver.com",
 			"seungtaek",
 			"seungtaek95");
 
 		// when
-		userRepository.save(user);
+		memberRepository.save(member);
 
 		// then
-		assertThat(user.getId()).isNotNull(); // id가 생성됨
+		assertThat(member.getId()).isNotNull(); // id가 생성됨
 	}
 }
