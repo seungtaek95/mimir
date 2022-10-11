@@ -48,19 +48,14 @@ public class AuthServiceImpl implements AuthService {
 		}
 
 		// session 저장 후 session id 반환
-		return this.saveMemberSession(member);
+		MemberSession memberSession = new MemberSession(member.getId());
+		memberSessionRepository.save(memberSession);
+
+		return memberSession.getId();
 	}
 
 	private boolean isEmailUsed(String email) {
 		Member member = memberRepository.findByEmail(email);
 		return member != null;
-	}
-
-	private String saveMemberSession(Member member) {
-		MemberSession memberSession = new MemberSession(member.getId());
-
-		memberSessionRepository.save(memberSession);
-
-		return memberSession.getId();
 	}
 }

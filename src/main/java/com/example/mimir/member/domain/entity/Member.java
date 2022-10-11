@@ -12,8 +12,8 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.event.BeforeSaveCallback;
 import org.springframework.stereotype.Component;
 
-import com.example.mimir.common.util.PasswordEncoderUtil;
-import com.example.mimir.common.util.UuidConverter;
+import com.example.mimir.common.util.PasswordEncoderUtils;
+import com.example.mimir.common.util.UuidUtils;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -27,21 +27,27 @@ public class Member {
 	@Getter(value = AccessLevel.NONE)
 	private UUID _id;
 
+	/** 이메일 */
 	private String email;
 
+	/** 비밀번호 */
 	@Getter(value = AccessLevel.NONE)
 	private String password;
 
+	/** 닉네임 */
 	private String nickname;
 
+	/** 가입 년월일시 */
 	@CreatedDate
 	@Column("registered_at")
 	private LocalDateTime registeredAt;
 
+	/** 수정 년월일시 */
 	@LastModifiedDate
 	@Column("updated_at")
 	private LocalDateTime updatedAt;
 
+	/** 탈퇴 년월일시 */
 	@Column("disabled_at")
 	private LocalDateTime disabledAt;
 
@@ -51,18 +57,19 @@ public class Member {
 	static class MemberBeforeSaveCallback implements BeforeSaveCallback<Member> {
 		@Override
 		public Member onBeforeSave(Member aggregate, MutableAggregateChange<Member> aggregateChange) {
-			UUID uuid = UUID.randomUUID();
-
-			aggregate.id = UuidConverter.uuidToBytes(uuid);
+			aggregate.id = UuidUtils.uuidToBytes(UUID.randomUUID());
 
 			return aggregate;
 		}
 	}
 
+	/**
+	 * 회원가입으로 사용자 생성
+	 */
 	public static Member signup(String email, String password, String nickname) {
 		Member member = new Member();
 		member.email = email;
-		member.password = PasswordEncoderUtil.encode(password);
+		member.password = PasswordEncoderUtils.encode(password);
 		member.nickname = nickname;
 		member.registeredAt = LocalDateTime.now();
 		member.updatedAt = LocalDateTime.now();
@@ -70,13 +77,16 @@ public class Member {
 		return member;
 	}
 
+	/**
+	 * 비밀번호 일치 여부 확인
+	 */
 	public boolean isPasswordMatch(String password) {
-		return PasswordEncoderUtil.matches(password, this.password);
+		return PasswordEncoderUtils.matches(password, this.password);
 	}
 
 	public UUID getId() {
 		if (_id == null) {
-			_id = UUID.nameUUIDFromBytes(id);
+			_id = UuidUtils.bytesToUuid(id);
 		}
 
 		return _id;

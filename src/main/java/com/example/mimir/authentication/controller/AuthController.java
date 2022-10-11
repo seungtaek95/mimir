@@ -38,7 +38,7 @@ public class AuthController {
 
 		String sessionId = authService.signin(signinDto);
 
-		response.addCookie(this.getSessionCookie(sessionId));
+		response.addCookie(this.createSessionCookie(sessionId));
 	}
 
 	@ExceptionHandler(AuthException.class)
@@ -47,7 +47,7 @@ public class AuthController {
 		return ResponseEntity.badRequest().body(errorResponse);
 	}
 
-	private Cookie getSessionCookie(String sessionId) {
+	private Cookie createSessionCookie(String sessionId) {
 		Cookie sessionCookie = new Cookie("SESSION_ID", sessionId);
 		sessionCookie.setHttpOnly(true);
 

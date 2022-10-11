@@ -3,10 +3,10 @@ package com.example.mimir.common.util;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-public class PasswordEncoderUtil {
+public class PasswordEncoderUtils {
 	private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-	private PasswordEncoderUtil() {}
+	private PasswordEncoderUtils() {}
 
 	public static String encode(String raw) {
 		return passwordEncoder.encode(raw);
