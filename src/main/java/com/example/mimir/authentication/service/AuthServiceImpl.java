@@ -1,7 +1,5 @@
 package com.example.mimir.authentication.service;
 
-import java.util.UUID;
-
 import org.springframework.stereotype.Service;
 import com.example.mimir.authentication.domain.entity.MemberSession;
 import com.example.mimir.authentication.domain.exception.AuthException;
@@ -39,7 +37,7 @@ public class AuthServiceImpl implements AuthService {
 	}
 
 	@Override
-	public String signin(SigninDto signinDto) {
+	public MemberSession signin(SigninDto signinDto) {
 		// email로 사용자 조회
 		Member member = memberRepository.findByEmail(signinDto.email());
 
@@ -51,7 +49,7 @@ public class AuthServiceImpl implements AuthService {
 		MemberSession memberSession = new MemberSession(member.getId());
 		memberSessionRepository.save(memberSession);
 
-		return memberSession.getId();
+		return memberSession;
 	}
 
 	private boolean isEmailUsed(String email) {

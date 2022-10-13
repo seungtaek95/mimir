@@ -4,7 +4,7 @@ CREATE TABLE member (
     password VARCHAR(255) NOT NULL,
     nickname VARCHAR(255) NOT NULL,
     registered_at DATETIME NOT NULL,
-    updated_at DATETIME NOT NULL,
+    updated_at DATETIME,
     disabled_at DATETIME,
     PRIMARY KEY (id),
     UNIQUE (email),
@@ -19,7 +19,7 @@ CREATE TABLE article (
     is_private TINYINT(1) NOT NULL DEFAULT true,
     view_count INT UNSIGNED NOT NULL DEFAULT 0,
     created_at DATETIME NOT NULL,
-    updated_at DATETIME NOT NULL,
+    updated_at DATETIME,
     deleted_at DATETIME,
     PRIMARY KEY (id),
     UNIQUE (id, title),
@@ -32,7 +32,7 @@ CREATE TABLE comment (
     article_id INT UNSIGNED NOT NULL,
     content VARCHAR(255),
     created_at DATETIME NOT NULL,
-    updated_at DATETIME NOT NULL,
+    updated_at DATETIME,
     deleted_at DATETIME,
     PRIMARY KEY (id),
     FOREIGN KEY (member_id) REFERENCES member(id),
@@ -40,7 +40,8 @@ CREATE TABLE comment (
 );
 
 CREATE TABLE member_session (
-    id BINARY(32) UNIQUE NOT NULL,
+    id varchar(20) UNIQUE NOT NULL,
+    member_id BINARY(16) NOT NULL,
     created_at DATETIME NOT NULL,
     PRIMARY KEY (id)
 );

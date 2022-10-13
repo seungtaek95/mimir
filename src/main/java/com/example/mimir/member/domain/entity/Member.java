@@ -72,7 +72,6 @@ public class Member {
 		member.password = PasswordEncoderUtils.encode(password);
 		member.nickname = nickname;
 		member.registeredAt = LocalDateTime.now();
-		member.updatedAt = LocalDateTime.now();
 
 		return member;
 	}

@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.mimir.authentication.controller.response.SignupResponse;
+import com.example.mimir.authentication.domain.entity.MemberSession;
 import com.example.mimir.authentication.domain.exception.AuthException;
 import com.example.mimir.authentication.service.AuthService;
 import com.example.mimir.authentication.service.dto.SigninDto;
@@ -36,9 +37,9 @@ public class AuthController {
 			@RequestBody @Valid SigninDto signinDto,
 			HttpServletResponse response) {
 
-		String sessionId = authService.signin(signinDto);
+		MemberSession memberSession = authService.signin(signinDto);
 
-		response.addCookie(this.createSessionCookie(sessionId));
+		response.addCookie(this.createSessionCookie(memberSession));
 	}
 
 	@ExceptionHandler(AuthException.class)
@@ -47,8 +48,8 @@ public class AuthController {
 		return ResponseEntity.badRequest().body(errorResponse);
 	}
 
-	private Cookie createSessionCookie(String sessionId) {
-		Cookie sessionCookie = new Cookie("SESSION_ID", sessionId);
+	private Cookie createSessionCookie(MemberSession memberSession) {
+		Cookie sessionCookie = new Cookie("SESSION_ID", memberSession.getId());
 		sessionCookie.setHttpOnly(true);
 
 		return sessionCookie;

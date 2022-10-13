@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import com.example.mimir.member.domain.entity.Member;
+import com.example.mimir.member.fixture.MemberFixture;
 
 @SpringBootTest
 @Transactional
@@ -19,10 +20,7 @@ public class MemberRepositoryTest {
 	@DisplayName("사용자 저장 성공")
 	void save() {
 		// given
-		Member member = Member.signup(
-			"seungtaek95@naver.com",
-			"seungtaek",
-			"seungtaek95");
+		Member member = MemberFixture.create();
 
 		// when
 		memberRepository.save(member);

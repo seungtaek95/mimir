@@ -19,11 +19,10 @@ import lombok.Getter;
 @Getter
 public class MemberSession {
 	@Id
-	private byte[] id;
+	private String id;
 
-	@Transient
-	@Getter(value = AccessLevel.NONE)
-	private String _id;
+	@Column("member_id")
+	private byte[] memberId;
 
 	@Transient
 	@Getter(value = AccessLevel.NONE)
@@ -35,7 +34,7 @@ public class MemberSession {
 	private final LocalDateTime createdAt;
 
 	public MemberSession(UUID memberId) {
-		this._memberId = memberId;
+		this.memberId = UuidUtils.uuidToBytes(memberId);
 		this.createdAt = LocalDateTime.now();
 	}
 
@@ -43,24 +42,15 @@ public class MemberSession {
 	static class MemberBeforeSaveCallback implements BeforeSaveCallback<MemberSession> {
 		@Override
 		public MemberSession onBeforeSave(MemberSession aggregate, MutableAggregateChange<MemberSession> aggregateChange) {
-			aggregate.id = UuidUtils.concatToBytes(UUID.randomUUID(), aggregate._memberId);
+			aggregate.id = "ABCDEFGHIJKLMNOPQRST";
 
 			return aggregate;
 		}
 	}
 
-	public String getId() {
-		if (_id == null) {
-			UUID[] uuids = UuidUtils.splitTwoUuid(id);
-			_id = uuids[0].toString() + uuids[1].toString();
-		}
-
-		return _id;
-	}
-
 	public UUID getMemberId() {
 		if (_memberId == null) {
-			_memberId = UuidUtils.splitTwoUuid(id)[1];
+			_memberId = UuidUtils.bytesToUuid(memberId);
 		}
 
 		return _memberId;
