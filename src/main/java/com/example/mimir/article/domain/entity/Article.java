@@ -12,9 +12,11 @@ import com.example.mimir.common.util.UuidUtils;
 import com.example.mimir.member.domain.entity.Member;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Article {
 	@Id
 	private Long id;

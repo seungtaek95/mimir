@@ -16,9 +16,13 @@ import com.example.mimir.common.util.PasswordEncoderUtils;
 import com.example.mimir.common.util.UuidUtils;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 	@Id
 	private byte[] id;
@@ -50,8 +54,6 @@ public class Member {
 	/** 탈퇴 년월일시 */
 	@Column("disabled_at")
 	private LocalDateTime disabledAt;
-
-	protected Member() {}
 
 	@Component
 	static class MemberBeforeSaveCallback implements BeforeSaveCallback<Member> {

@@ -1,4 +1,4 @@
-package com.example.mimir.member.entity;
+package com.example.mimir.member.domain.entity;
 
 import static org.assertj.core.api.Assertions.*;
 
