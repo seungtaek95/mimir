@@ -7,7 +7,6 @@ import com.example.mimir.member.domain.entity.Member;
 import com.example.mimir.member.domain.entity.MemberFixture;
 
 public class ArticleTest {
-
 	@Test
 	@DisplayName("게시글 생성 성공")
 	void newArticle() {
