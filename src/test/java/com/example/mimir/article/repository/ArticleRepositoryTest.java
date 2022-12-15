@@ -13,7 +13,6 @@ import com.example.mimir.member.repository.MemberRepository;
 
 @Transactional
 @SpringBootTest
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ArticleRepositoryTest {
 	@Autowired
 	private MemberRepository memberRepository;
@@ -25,7 +24,7 @@ public class ArticleRepositoryTest {
 
 	@BeforeEach
 	void saveMember() {
-		testMember = MemberFixture.create();
+		testMember = Member.signup("test@test.com", "test", "test");
 		memberRepository.save(testMember);
 	}
 

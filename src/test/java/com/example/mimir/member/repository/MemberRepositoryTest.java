@@ -20,7 +20,7 @@ public class MemberRepositoryTest {
 	@DisplayName("사용자 저장 성공")
 	void save() {
 		// given
-		Member member = MemberFixture.create();
+		Member member = Member.signup("test@test.com", "test", "test");
 
 		// when
 		memberRepository.save(member);
