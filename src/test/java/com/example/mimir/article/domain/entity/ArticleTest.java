@@ -11,16 +11,16 @@ public class ArticleTest {
 	@DisplayName("게시글 생성 성공")
 	void newArticle() {
 		// given
-		Member member = MemberFixture.create();
+		Member writer = MemberFixture.create();
 		String title = "title";
 		String content = "content";
 		boolean isPrivate = false;
 
 		// when
-		Article article = new Article(member, title, content, isPrivate);
+		Article article = new Article(writer, title, content, isPrivate);
 
 		// then
-		assertThat(article.getMemberId()).isEqualTo(member.getId());
+		assertThat(article.getWriterMemberId()).isEqualTo(writer.getId());
 		assertThat(article.getTitle()).isEqualTo(title);
 		assertThat(article.getContent()).isEqualTo(content);
 		assertThat(article.isPrivate()).isEqualTo(isPrivate);

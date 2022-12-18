@@ -23,11 +23,11 @@ public class Article {
 
 	/** 작성자 id */
 	@Column("member_id")
-	private final byte[] memberId;
+	@Getter(value = AccessLevel.NONE)
+	private final byte[] _writerMemberId;
 
 	@Transient
-	@Getter(value = AccessLevel.NONE)
-	private UUID _memberId;
+	private UUID writerMemberId;
 
 	/** 제목 */
 	private String title;
@@ -58,7 +58,7 @@ public class Article {
 	private LocalDateTime deletedAt;
 
 	public Article(Member writer, String title, String content, boolean isPrivate) {
-		this.memberId = UuidUtils.uuidToBytes(writer.getId());
+		this._writerMemberId = UuidUtils.uuidToBytes(writer.getId());
 		this.title = title;
 		this.content = content;
 		this.isPrivate = isPrivate;
@@ -67,11 +67,11 @@ public class Article {
 		this.updatedAt = LocalDateTime.now();
 	}
 
-	public UUID getWriterId() {
-		if (_memberId == null) {
-			_memberId = UuidUtils.bytesToUuid(memberId);
+	public UUID getWriterMemberId() {
+		if (writerMemberId == null) {
+			writerMemberId = UuidUtils.bytesToUuid(_writerMemberId);
 		}
 
-		return _memberId;
+		return writerMemberId;
 	}
 }

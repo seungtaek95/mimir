@@ -25,15 +25,15 @@ public class Comment {
 
 	/** 작성자 id */
 	@Column("member_id")
-	private final byte[] memberId;
+	@Getter(value = AccessLevel.NONE)
+	private final byte[] _writerMemberId;
+
+	@Transient
+	private UUID writerMemberId;
 
 	/** 게시글 id **/
 	@Column("article_id")
 	private final long articleId;
-
-	@Transient
-	@Getter(value = AccessLevel.NONE)
-	private UUID _memberId;
 
 	/** 내용 */
 	private String content;
@@ -53,18 +53,18 @@ public class Comment {
 	private LocalDateTime deletedAt;
 
 	public Comment(Member writer, Article article, String content) {
-		this.memberId = UuidUtils.uuidToBytes(writer.getId());
+		this._writerMemberId = UuidUtils.uuidToBytes(writer.getId());
 		this.articleId = article.getId();
 		this.content = content;
 		this.createdAt = LocalDateTime.now();
 		this.updatedAt = LocalDateTime.now();
 	}
 
-	public UUID getMemberId() {
-		if (_memberId == null) {
-			_memberId = UuidUtils.bytesToUuid(memberId);
+	public UUID getWriterMemberId() {
+		if (writerMemberId == null) {
+			writerMemberId = UuidUtils.bytesToUuid(_writerMemberId);
 		}
 
-		return _memberId;
+		return writerMemberId;
 	}
 }
