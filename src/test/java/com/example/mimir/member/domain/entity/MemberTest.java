@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import com.example.mimir.member.domain.entity.Member;
 
 public class MemberTest {
 	@Test
@@ -19,10 +18,10 @@ public class MemberTest {
 		Member member = Member.signup(email, password, nickname);
 
 		// then
-		assertThat(member.getEmail()).isEqualTo(email); // email 이 설정됨
-		assertThat(member.getNickname()).isEqualTo(nickname); // nickname 이 설정됨
-		assertThat(member.getRegisteredAt()).isNotNull(); // registeredAt 이 설정됨
-		assertThat(member.getUpdatedAt()).isNull();
+		assertThat(member.getEmail()).isEqualTo(email);
+		assertThat(member.getNickname()).isEqualTo(nickname);
+		assertThat(member.getRegisteredAt()).isNotNull();
+		assertThat(member.getUpdatedAt()).isNotNull();
 		assertThat(member.getDisabledAt()).isNull();
 	}
 }

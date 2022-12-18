@@ -5,10 +5,10 @@ import static org.mockito.BDDMockito.*;
 
 import java.util.UUID;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import com.example.mimir.authentication.domain.entity.MemberSession;
@@ -28,14 +28,8 @@ public class AuthServiceTest {
 	@Mock
 	MemberSessionRepository memberSessionRepository;
 
-	AuthService sut;
-
-	@BeforeEach
-	void beforeEach() {
-		sut = new AuthServiceImpl(
-			memberRepository,
-			memberSessionRepository);
-	}
+	@InjectMocks
+	AuthServiceImpl sut;
 
 	@Test
 	@DisplayName("회원가입으로 유저 생성")
@@ -54,7 +48,7 @@ public class AuthServiceTest {
 		assertThat(member.getEmail()).isEqualTo(signupDto.email());
 		assertThat(member.getNickname()).isEqualTo(signupDto.nickname());
 		assertThat(member.getRegisteredAt()).isNotNull(); // registeredAt 이 설정됨
-		assertThat(member.getUpdatedAt()).isNull();
+		assertThat(member.getUpdatedAt()).isNotNull();
 		assertThat(member.getDisabledAt()).isNull();
 	}
 

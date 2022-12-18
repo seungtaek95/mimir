@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import com.example.mimir.member.domain.entity.Member;
-import com.example.mimir.member.domain.entity.MemberFixture;
 
 @SpringBootTest
 @Transactional
