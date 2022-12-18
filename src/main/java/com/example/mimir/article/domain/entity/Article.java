@@ -1,6 +1,7 @@
 package com.example.mimir.article.domain.entity;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -59,8 +60,8 @@ public class Article {
 
 	public Article(Member writer, String title, String content, boolean isPrivate) {
 		this._writerMemberId = UuidUtils.uuidToBytes(writer.getId());
-		this.title = title;
-		this.content = content;
+		this.title = Objects.requireNonNull(title);
+		this.content = Objects.requireNonNull(content);
 		this.isPrivate = isPrivate;
 		this.viewCount = 0;
 		this.createdAt = LocalDateTime.now();

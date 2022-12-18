@@ -8,7 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import com.example.mimir.article.domain.entity.Article;
 import com.example.mimir.member.domain.entity.Member;
-import com.example.mimir.member.domain.entity.MemberFixture;
 import com.example.mimir.member.repository.MemberRepository;
 
 @Transactional

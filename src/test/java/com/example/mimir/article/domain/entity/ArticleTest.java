@@ -27,5 +27,34 @@ public class ArticleTest {
 		assertThat(article.getViewCount()).isEqualTo(0L);
 		assertThat(article.getCreatedAt()).isNotNull();
 		assertThat(article.getUpdatedAt()).isNotNull();
+		assertThat(article.getDeletedAt()).isNull();
+	}
+
+	@Test
+	@DisplayName("게시글 생성 실패, content 없음")
+	void newArticleNoTitle() {
+		// given
+		Member writer = MemberFixture.create();
+		String title = null;
+		String content = "content";
+		boolean isPrivate = false;
+
+		// when, then
+		assertThatThrownBy(() -> new Article(writer, title, content, isPrivate))
+			.isInstanceOf(NullPointerException.class);
+	}
+
+	@Test
+	@DisplayName("게시글 생성 실패, content 없음")
+	void newArticleNoContent() {
+		// given
+		Member writer = MemberFixture.create();
+		String title = "title";
+		String content = null;
+		boolean isPrivate = false;
+
+		// when, then
+		assertThatThrownBy(() -> new Article(writer, title, content, isPrivate))
+			.isInstanceOf(NullPointerException.class);
 	}
 }
