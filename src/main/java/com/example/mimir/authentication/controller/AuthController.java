@@ -1,6 +1,6 @@
 package com.example.mimir.authentication.controller;
 
-import java.util.Arrays;
+import java.util.UUID;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -51,7 +51,10 @@ public class AuthController {
 	}
 
 	private Cookie createSessionCookie(MemberSession memberSession) {
-		Cookie sessionCookie = new Cookie(MemberSession.COOKIE_NAME, Arrays.toString(memberSession.getId()));
+		UUID[] uuids = UuidUtils.splitTwoUuid(memberSession.getId());
+		String cookieValue = uuids[0].toString() + uuids[1].toString();
+
+		Cookie sessionCookie = new Cookie(MemberSession.COOKIE_NAME, cookieValue);
 		sessionCookie.setHttpOnly(true);
 
 		return sessionCookie;

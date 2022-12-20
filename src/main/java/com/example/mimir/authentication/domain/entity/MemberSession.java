@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceCreator;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.conversion.MutableAggregateChange;
 import org.springframework.data.relational.core.mapping.Column;
@@ -38,6 +39,13 @@ public class MemberSession {
 	public MemberSession(UUID memberId) {
 		this.memberId = UuidUtils.uuidToBytes(memberId);
 		this.createdAt = LocalDateTime.now();
+	}
+
+	@PersistenceCreator
+	private MemberSession(byte[] id, byte[] memberId, LocalDateTime createdAt) {
+		this.id = id;
+		this.memberId = memberId;
+		this.createdAt = createdAt;
 	}
 
 	@Component

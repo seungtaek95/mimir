@@ -15,7 +15,6 @@ public class MemberFixture {
 	public static Member create() {
 		return new Member(
 			UuidUtils.uuidToBytes(id),
-			id,
 			email,
 			PasswordEncoderUtils.encode(password),
 			nickname,
@@ -26,7 +25,6 @@ public class MemberFixture {
 
 	public static Member noId() {
 		return new Member(
-			null,
 			null,
 			email,
 			PasswordEncoderUtils.encode(password),

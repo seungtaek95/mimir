@@ -3,10 +3,7 @@ package com.example.mimir.member.domain.entity;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.annotation.Transient;
+import org.springframework.data.annotation.*;
 import org.springframework.data.relational.core.conversion.MutableAggregateChange;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.event.BeforeSaveCallback;
@@ -16,13 +13,9 @@ import com.example.mimir.common.util.PasswordEncoderUtils;
 import com.example.mimir.common.util.UuidUtils;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 	@Id
 	private byte[] id;
@@ -65,16 +58,29 @@ public class Member {
 		}
 	}
 
+	@PersistenceCreator
+	public Member(byte[] id, String email, String password, String nickname, LocalDateTime registeredAt, LocalDateTime updatedAt, LocalDateTime disabledAt) {
+		this.id = id;
+		this.email = email;
+		this.password = password;
+		this.nickname = nickname;
+		this.registeredAt = registeredAt;
+		this.updatedAt = updatedAt;
+		this.disabledAt = disabledAt;
+	}
+
 	/**
 	 * 회원가입으로 사용자 생성
 	 */
 	public static Member signup(String email, String password, String nickname) {
-		Member member = new Member();
-		member.email = email;
-		member.password = PasswordEncoderUtils.encode(password);
-		member.nickname = nickname;
-		member.registeredAt = LocalDateTime.now();
-		member.updatedAt = LocalDateTime.now();
+		Member member = new Member(
+			null,
+			email,
+			PasswordEncoderUtils.encode(password),
+			nickname,
+			LocalDateTime.now(),
+			LocalDateTime.now(),
+			null);
 
 		return member;
 	}
