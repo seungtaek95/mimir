@@ -7,3 +7,6 @@ spring:
 server:
   error:
     include-stacktrace: never
+logging:
+  level:
+    org.springframework.jdbc.core.JdbcTemplate: debug
