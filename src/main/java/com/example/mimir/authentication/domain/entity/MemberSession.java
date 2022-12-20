@@ -18,8 +18,10 @@ import lombok.Getter;
 
 @Getter
 public class MemberSession {
+	public static String COOKIE_NAME = "SESSION_ID";
+
 	@Id
-	private String id;
+	private byte[] id;
 
 	@Column("member_id")
 	private byte[] memberId;
@@ -42,7 +44,7 @@ public class MemberSession {
 	static class MemberBeforeSaveCallback implements BeforeSaveCallback<MemberSession> {
 		@Override
 		public MemberSession onBeforeSave(MemberSession aggregate, MutableAggregateChange<MemberSession> aggregateChange) {
-			aggregate.id = "ABCDEFGHIJKLMNOPQRST";
+			aggregate.id = UuidUtils.concatToBytes(UUID.randomUUID(), aggregate.getMemberId());
 
 			return aggregate;
 		}

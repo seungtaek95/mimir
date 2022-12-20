@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.mimir.article.controller.response.ArticleListView;
 import com.example.mimir.article.domain.entity.Article;
 import com.example.mimir.member.domain.entity.Member;
+import com.example.mimir.member.domain.entity.MemberFixture;
 import com.example.mimir.member.repository.MemberRepository;
 
 @Transactional
@@ -33,7 +34,7 @@ public class ArticleRepositoryTest {
 		String title = "title";
 		String content = "content";
 		boolean isPrivate = false;
-		Article article = new Article(member, title, content, isPrivate);
+		Article article = new Article(member.getId(), title, content, isPrivate);
 
 		// when
 		Article result = sut.save(article);
@@ -46,13 +47,13 @@ public class ArticleRepositoryTest {
 	@DisplayName("게시글 리스트 뷰 조회")
 	void getArticleListView() {
 		// given
-		Member member = Member.signup("test@test.com", "test", "test");
+		Member member = MemberFixture.noId();
 		memberRepository.save(member);
 
 		String title = "title";
 		String content = "content";
 		boolean isPrivate = false;
-		Article article = new Article(member, title, content, isPrivate);
+		Article article = new Article(member.getId(), title, content, isPrivate);
 		sut.save(article);
 
 		// when
@@ -65,6 +66,6 @@ public class ArticleRepositoryTest {
 		assertThat(articleListView.title()).isEqualTo(article.getTitle());
 		assertThat(articleListView.content()).isEqualTo(article.getContent());
 		assertThat(articleListView.viewCount()).isEqualTo(article.getViewCount());
-		assertThat(articleListView.createdAt().truncatedTo(ChronoUnit.SECONDS)).isEqualTo(article.getCreatedAt().truncatedTo(ChronoUnit.SECONDS));
+		assertThat(articleListView.createdAt().truncatedTo(ChronoUnit.MINUTES)).isEqualTo(article.getCreatedAt().truncatedTo(ChronoUnit.MINUTES));
 	}
 }

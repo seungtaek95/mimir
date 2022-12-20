@@ -1,5 +1,6 @@
 package com.example.mimir.authentication.controller;
 
+import java.util.Arrays;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -13,6 +14,7 @@ import com.example.mimir.authentication.service.AuthService;
 import com.example.mimir.authentication.service.dto.SigninDto;
 import com.example.mimir.authentication.service.dto.SignupDto;
 import com.example.mimir.common.model.ErrorResponse;
+import com.example.mimir.common.util.UuidUtils;
 import com.example.mimir.member.domain.entity.Member;
 
 import lombok.RequiredArgsConstructor;
@@ -49,7 +51,7 @@ public class AuthController {
 	}
 
 	private Cookie createSessionCookie(MemberSession memberSession) {
-		Cookie sessionCookie = new Cookie("SESSION_ID", memberSession.getId());
+		Cookie sessionCookie = new Cookie(MemberSession.COOKIE_NAME, Arrays.toString(memberSession.getId()));
 		sessionCookie.setHttpOnly(true);
 
 		return sessionCookie;

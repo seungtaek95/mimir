@@ -34,7 +34,7 @@ public class ArticleServiceTest {
 		Member writer = MemberFixture.create();
 
 		// when
-		Article result = sut.createArticle(createArticleDto, writer);
+		Article result = sut.createArticle(createArticleDto, writer.getId());
 
 		// then
 		assertThat(result.getWriterMemberId()).isEqualTo(writer.getId());

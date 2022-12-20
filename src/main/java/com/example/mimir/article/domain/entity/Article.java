@@ -58,8 +58,8 @@ public class Article {
 	@Column("deleted_at")
 	private LocalDateTime deletedAt;
 
-	public Article(Member writer, String title, String content, boolean isPrivate) {
-		this._writerMemberId = UuidUtils.uuidToBytes(writer.getId());
+	public Article(UUID writerMemberId, String title, String content, boolean isPrivate) {
+		this._writerMemberId = UuidUtils.uuidToBytes(writerMemberId);
 		this.title = Objects.requireNonNull(title);
 		this.content = Objects.requireNonNull(content);
 		this.isPrivate = isPrivate;

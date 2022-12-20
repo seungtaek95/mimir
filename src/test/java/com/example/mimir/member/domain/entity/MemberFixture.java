@@ -23,4 +23,16 @@ public class MemberFixture {
 			LocalDateTime.now(),
 			null);
 	}
+
+	public static Member noId() {
+		return new Member(
+			null,
+			null,
+			email,
+			PasswordEncoderUtils.encode(password),
+			nickname,
+			LocalDateTime.now(),
+			LocalDateTime.now(),
+			null);
+	}
 }

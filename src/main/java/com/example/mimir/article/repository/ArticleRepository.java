@@ -11,7 +11,7 @@ public interface ArticleRepository extends CrudRepository<Article, Long> {
 	@Query(value =
  	"""
  	SELECT
- 		m.id AS _writer_member_id, m.nickname AS writer_nickname,
+ 		m.id AS _writer_id, m.nickname AS writer_nickname,
  		a.title, a.content, a.view_count, a.created_at
  	FROM article a
  	LEFT JOIN member m

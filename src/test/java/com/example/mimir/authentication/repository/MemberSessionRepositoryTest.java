@@ -10,10 +10,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import com.example.mimir.authentication.domain.entity.MemberSession;
+import com.example.mimir.member.domain.entity.Member;
+import com.example.mimir.member.domain.entity.MemberFixture;
+import com.example.mimir.member.repository.MemberRepository;
 
 @SpringBootTest
 @Transactional
 public class MemberSessionRepositoryTest {
+	@Autowired
+	private MemberRepository memberRepository;
+
 	@Autowired
 	private MemberSessionRepository memberSessionRepository;
 
@@ -21,8 +27,10 @@ public class MemberSessionRepositoryTest {
 	@DisplayName("사용자 세션 저장 성공")
 	void save() {
 		// given
-		UUID memberId = UUID.randomUUID();
-		MemberSession memberSession = new MemberSession(memberId);
+		Member member = MemberFixture.noId();
+		memberRepository.save(member);
+
+		MemberSession memberSession = new MemberSession(member.getId());
 
 		// when
 		memberSessionRepository.save(memberSession);
