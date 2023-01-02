@@ -9,7 +9,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import com.example.mimir.article.controller.response.ArticleListView;
+import com.example.mimir.article.service.dto.ArticleListView;
 import com.example.mimir.article.domain.entity.Article;
 import com.example.mimir.member.domain.entity.Member;
 import com.example.mimir.member.domain.entity.MemberFixture;
@@ -61,10 +61,10 @@ public class ArticleRepositoryTest {
 
 		// then
 		ArticleListView articleListView = articleListViews.get(0);
+		assertThat(articleListView.articleId()).isEqualTo(article.getId());
 		assertThat(articleListView.writerId()).isEqualTo(member.getId());
 		assertThat(articleListView.writerNickname()).isEqualTo(member.getNickname());
 		assertThat(articleListView.title()).isEqualTo(article.getTitle());
-		assertThat(articleListView.content()).isEqualTo(article.getContent());
 		assertThat(articleListView.viewCount()).isEqualTo(article.getViewCount());
 		assertThat(articleListView.createdAt().truncatedTo(ChronoUnit.MINUTES)).isEqualTo(article.getCreatedAt().truncatedTo(ChronoUnit.MINUTES));
 	}

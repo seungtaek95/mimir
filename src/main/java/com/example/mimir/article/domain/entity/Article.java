@@ -10,7 +10,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Column;
 import com.example.mimir.common.util.UuidUtils;
-import com.example.mimir.member.domain.entity.Member;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
