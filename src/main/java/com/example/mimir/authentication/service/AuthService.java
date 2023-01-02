@@ -15,4 +15,6 @@ public interface AuthService {
 	 * 로그인 처리
 	 */
 	MemberSession signin(SigninDto signinDto);
+
+	Member getMemberByCookieValue(String cookieValue);
 }

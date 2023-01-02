@@ -1,11 +1,14 @@
 package com.example.mimir.authentication.service;
 
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
 import com.example.mimir.authentication.domain.entity.MemberSession;
 import com.example.mimir.authentication.domain.exception.AuthException;
 import com.example.mimir.authentication.domain.exception.AuthExceptionEnum;
 import com.example.mimir.authentication.repository.MemberSessionRepository;
 import com.example.mimir.authentication.service.dto.SigninDto;
+import com.example.mimir.common.util.UuidUtils;
 import com.example.mimir.member.domain.entity.Member;
 import com.example.mimir.member.repository.MemberRepository;
 import com.example.mimir.authentication.service.dto.SignupDto;
@@ -50,6 +53,29 @@ public class AuthServiceImpl implements AuthService {
 		memberSessionRepository.save(memberSession);
 
 		return memberSession;
+	}
+
+	@Override
+	public Member getMemberByCookieValue(String cookieValue) {
+		if (cookieValue == null || cookieValue.length() != 72) {
+			throw new AuthException(AuthExceptionEnum.INVALID_SESSION_ID);
+		}
+
+		UUID uuid = UUID.fromString(cookieValue.substring(0, 36));
+		UUID memberId = UUID.fromString(cookieValue.substring(36, 72));
+		byte[] memberSessionId = UuidUtils.concatToBytes(uuid, memberId);
+
+		// 세션 조회
+		MemberSession memberSession = memberSessionRepository.findById(memberSessionId)
+			.orElseThrow(() -> new AuthException(AuthExceptionEnum.INVALID_SESSION_ID));
+
+		if (!memberSession.getMemberId().equals(memberId)) {
+			throw new AuthException(AuthExceptionEnum.INVALID_SESSION_ID);
+		}
+
+		// 회원 조회
+		return memberRepository.findById(UuidUtils.uuidToBytes(memberId))
+			.orElseThrow(() -> new AuthException(AuthExceptionEnum.INVALID_SESSION_ID));
 	}
 
 	private boolean isEmailUsed(String email) {
