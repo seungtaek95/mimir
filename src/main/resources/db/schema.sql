@@ -40,7 +40,7 @@ CREATE TABLE comment (
 );
 
 CREATE TABLE member_session (
-    id varchar(20) UNIQUE NOT NULL,
+    id BINARY(32) UNIQUE NOT NULL,
     member_id BINARY(16) NOT NULL,
     created_at DATETIME NOT NULL,
     PRIMARY KEY (id)
