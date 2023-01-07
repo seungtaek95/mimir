@@ -1,4 +1,4 @@
-package com.example.mimir.authentication.service;
+package com.example.mimir.authentication.domain.service;
 
 import java.util.UUID;
 
@@ -6,12 +6,12 @@ import org.springframework.stereotype.Service;
 import com.example.mimir.authentication.domain.entity.MemberSession;
 import com.example.mimir.authentication.domain.exception.AuthException;
 import com.example.mimir.authentication.domain.exception.AuthExceptionEnum;
+import com.example.mimir.authentication.domain.service.dto.SigninDto;
+import com.example.mimir.authentication.domain.service.dto.SignupDto;
 import com.example.mimir.authentication.repository.MemberSessionRepository;
-import com.example.mimir.authentication.service.dto.SigninDto;
 import com.example.mimir.common.util.UuidUtils;
 import com.example.mimir.member.domain.entity.Member;
 import com.example.mimir.member.repository.MemberRepository;
-import com.example.mimir.authentication.service.dto.SignupDto;
 
 import lombok.RequiredArgsConstructor;
 

@@ -4,8 +4,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import com.example.mimir.article.service.dto.ArticleDetailView;
-import com.example.mimir.comment.service.dto.CommentView;
+import com.example.mimir.article.domain.service.dto.view.ArticleDetailView;
+import com.example.mimir.comment.domain.service.dto.CommentView;
+import com.example.mimir.common.util.UuidUtils;
 
 public record ArticleDetailResponse(
 	/*
@@ -41,7 +42,7 @@ public record ArticleDetailResponse(
 	/*
 	 * 댓글 리스트
 	 */
-	List<CommentView> comments,
+	List<ArticleDetailResponse.Comment> comments,
 
 	/*
 	 * 생성 년월일시
@@ -55,14 +56,31 @@ public record ArticleDetailResponse(
 ) {
 	public static ArticleDetailResponse from(ArticleDetailView articleDetailView, List<CommentView> commentViews) {
 		return new ArticleDetailResponse(
-			articleDetailView.articleId(),
-			articleDetailView.writerId(),
+			articleDetailView.id(),
+			UuidUtils.bytesToUuid(articleDetailView.writerId()),
 			articleDetailView.writerNickname(),
 			articleDetailView.title(),
 			articleDetailView.content(),
 			articleDetailView.viewCount(),
-			commentViews,
+			commentViews.stream().map(Comment::from).toList(),
 			articleDetailView.createdAt(),
 			articleDetailView.updatedAt());
+	}
+
+	protected record Comment(
+		long id,
+		UUID writerId,
+		String writerNickname,
+		String content,
+		LocalDateTime createdAt
+	) {
+		public static Comment from(CommentView commentView) {
+			return new Comment(
+				commentView.id(),
+				UuidUtils.bytesToUuid(commentView.writerId()),
+				commentView.writerNickname(),
+				commentView.content(),
+				commentView.createdAt());
+		}
 	}
 }

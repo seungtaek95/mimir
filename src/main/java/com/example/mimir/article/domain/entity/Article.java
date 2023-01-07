@@ -4,19 +4,15 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.annotation.Transient;
+import org.springframework.data.annotation.*;
 import org.springframework.data.relational.core.mapping.Column;
 import com.example.mimir.common.util.UuidUtils;
+import com.example.mimir.member.domain.entity.Member;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Article {
 	@Id
 	private Long id;
@@ -57,8 +53,21 @@ public class Article {
 	@Column("deleted_at")
 	private LocalDateTime deletedAt;
 
-	public Article(UUID writerMemberId, String title, String content, boolean isPrivate) {
-		this._writerMemberId = UuidUtils.uuidToBytes(writerMemberId);
+	@PersistenceCreator
+	protected Article(Long id, byte[] _writerMemberId, String title, String content, boolean isPrivate, long viewCount, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
+		this.id = id;
+		this._writerMemberId = _writerMemberId;
+		this.title = title;
+		this.content = content;
+		this.isPrivate = isPrivate;
+		this.viewCount = viewCount;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+		this.deletedAt = deletedAt;
+	}
+
+	public Article(Member writer, String title, String content, boolean isPrivate) {
+		this._writerMemberId = UuidUtils.uuidToBytes(writer.getId());
 		this.title = Objects.requireNonNull(title);
 		this.content = Objects.requireNonNull(content);
 		this.isPrivate = isPrivate;
@@ -73,5 +82,9 @@ public class Article {
 		}
 
 		return writerMemberId;
+	}
+
+	public void increaseViewCount() {
+		viewCount += 1;
 	}
 }

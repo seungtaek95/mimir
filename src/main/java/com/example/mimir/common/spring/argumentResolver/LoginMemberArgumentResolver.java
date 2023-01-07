@@ -14,7 +14,7 @@ import com.example.mimir.authentication.domain.entity.LoginMember;
 import com.example.mimir.authentication.domain.entity.MemberSession;
 import com.example.mimir.authentication.domain.exception.AuthException;
 import com.example.mimir.authentication.domain.exception.AuthExceptionEnum;
-import com.example.mimir.authentication.service.AuthService;
+import com.example.mimir.authentication.domain.service.AuthService;
 import com.example.mimir.member.domain.entity.Member;
 
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolve
 	}
 
 	@Override
-	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
 		HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
 		Cookie cookie = WebUtils.getCookie(request, MemberSession.COOKIE_NAME);
 

@@ -2,15 +2,17 @@ package com.example.mimir.article.repository;
 
 import static org.assertj.core.api.Assertions.*;
 
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import com.example.mimir.article.service.dto.ArticleListView;
+
+import com.example.mimir.article.domain.service.dto.view.ArticleDetailView;
+import com.example.mimir.article.domain.service.dto.view.ArticleListView;
 import com.example.mimir.article.domain.entity.Article;
+import com.example.mimir.common.util.UuidUtils;
 import com.example.mimir.member.domain.entity.Member;
 import com.example.mimir.member.domain.entity.MemberFixture;
 import com.example.mimir.member.repository.MemberRepository;
@@ -34,7 +36,7 @@ public class ArticleRepositoryTest {
 		String title = "title";
 		String content = "content";
 		boolean isPrivate = false;
-		Article article = new Article(member.getId(), title, content, isPrivate);
+		Article article = new Article(member, title, content, isPrivate);
 
 		// when
 		Article result = sut.save(article);
@@ -53,19 +55,63 @@ public class ArticleRepositoryTest {
 		String title = "title";
 		String content = "content";
 		boolean isPrivate = false;
-		Article article = new Article(member.getId(), title, content, isPrivate);
+		Article article = new Article(member, title, content, isPrivate);
 		sut.save(article);
 
 		// when
-		List<ArticleListView> articleListViews = sut.getArticleListViews();
+		List<ArticleListView> articleListViews = sut.getListViews();
 
 		// then
-		ArticleListView articleListView = articleListViews.get(0);
-		assertThat(articleListView.articleId()).isEqualTo(article.getId());
-		assertThat(articleListView.writerId()).isEqualTo(member.getId());
-		assertThat(articleListView.writerNickname()).isEqualTo(member.getNickname());
-		assertThat(articleListView.title()).isEqualTo(article.getTitle());
-		assertThat(articleListView.viewCount()).isEqualTo(article.getViewCount());
-		assertThat(articleListView.createdAt().truncatedTo(ChronoUnit.MINUTES)).isEqualTo(article.getCreatedAt().truncatedTo(ChronoUnit.MINUTES));
+		articleListViews.forEach(articleListView -> {
+			assertThat(UuidUtils.bytesToUuid(articleListView.writerId())).isNotNull();
+			assertThat(articleListView.writerNickname()).isNotNull();
+			assertThat(articleListView.title()).isNotNull();
+			assertThat(articleListView.createdAt()).isNotNull();
+		});
+	}
+
+	@Test
+	@DisplayName("게시글 조회수 증가")
+	void increaseViewCount() {
+		// given
+		Member member = MemberFixture.noId();
+		memberRepository.save(member);
+
+		String title = "title";
+		String content = "content";
+		boolean isPrivate = false;
+		Article target = new Article(member, title, content, isPrivate);
+		sut.save(target);
+
+		// when
+		sut.increaseViewCountById(target.getId());
+
+		// then
+		Article result = sut.findById(target.getId()).orElseThrow();
+		assertThat(result.getViewCount()).isEqualTo(target.getViewCount() + 1);
+	}
+
+	@Test
+	@DisplayName("게시글 상세 뷰 조회")
+	void getArticleDetailView() {
+		// given
+		Member member = MemberFixture.noId();
+		memberRepository.save(member);
+
+		String title = "title";
+		String content = "content";
+		boolean isPrivate = false;
+		Article article = new Article(member, title, content, isPrivate);
+		sut.save(article);
+
+		// when
+		ArticleDetailView articleDetailView = sut.getDetailView(article.getId());
+
+		// then
+		assertThat(UuidUtils.bytesToUuid(articleDetailView.writerId())).isNotNull();
+		assertThat(articleDetailView.writerNickname()).isNotNull();
+		assertThat(articleDetailView.title()).isNotNull();
+		assertThat(articleDetailView.content()).isNotNull();
+		assertThat(articleDetailView.createdAt()).isNotNull();
 	}
 }

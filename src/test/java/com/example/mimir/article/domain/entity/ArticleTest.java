@@ -17,7 +17,7 @@ public class ArticleTest {
 		boolean isPrivate = false;
 
 		// when
-		Article article = new Article(writer.getId(), title, content, isPrivate);
+		Article article = new Article(writer, title, content, isPrivate);
 
 		// then
 		assertThat(article.getWriterMemberId()).isEqualTo(writer.getId());
@@ -40,7 +40,7 @@ public class ArticleTest {
 		boolean isPrivate = false;
 
 		// when, then
-		assertThatThrownBy(() -> new Article(writer.getId(), title, content, isPrivate))
+		assertThatThrownBy(() -> new Article(writer, title, content, isPrivate))
 			.isInstanceOf(NullPointerException.class);
 	}
 
@@ -54,7 +54,7 @@ public class ArticleTest {
 		boolean isPrivate = false;
 
 		// when, then
-		assertThatThrownBy(() -> new Article(writer.getId(), title, content, isPrivate))
+		assertThatThrownBy(() -> new Article(writer, title, content, isPrivate))
 			.isInstanceOf(NullPointerException.class);
 	}
 }

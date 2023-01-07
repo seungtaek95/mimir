@@ -1,4 +1,4 @@
-package com.example.mimir.authentication.service.dto;
+package com.example.mimir.authentication.domain.service.dto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
