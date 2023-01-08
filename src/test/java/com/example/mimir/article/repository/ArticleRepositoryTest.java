@@ -105,7 +105,7 @@ public class ArticleRepositoryTest {
 		sut.save(article);
 
 		// when
-		ArticleDetailView articleDetailView = sut.getDetailView(article.getId());
+		ArticleDetailView articleDetailView = sut.getDetailViewById(article.getId());
 
 		// then
 		assertThat(UuidUtils.bytesToUuid(articleDetailView.writerId())).isNotNull();

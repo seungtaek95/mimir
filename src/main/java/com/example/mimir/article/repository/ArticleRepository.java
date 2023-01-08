@@ -45,5 +45,5 @@ public interface ArticleRepository extends CrudRepository<Article, Long> {
 	WHERE
 		a.id = :articleId
 	""")
-	ArticleDetailView getDetailView(long articleId);
+	ArticleDetailView getDetailViewById(long articleId);
 }
